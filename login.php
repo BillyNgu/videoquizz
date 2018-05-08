@@ -7,18 +7,14 @@
  */
 require_once './dao/dao.php';
 
-$nickname = $_SESSION['Nickname'];
-$id = getUserIdFromNickname($nickname);
-$postsPerID = getAllPostsByIDUser($id);
+$nickname = $_SESSION['pseudo'];
 ?>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <title>Webpost</title>
-        <link rel="stylesheet" href="css/bootstrap.css">
-        <script src="js/jquery-1.11.0.min.js"></script>
-        <script src="js/jquery-migrate-1.2.1.min.js"></script>
+        <?php require_once './css/css_js.php'; ?>
     </head>
     <body>
         <div class="container">
@@ -30,7 +26,7 @@ $postsPerID = getAllPostsByIDUser($id);
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="navbar-brand">Bienvenue <?= $_SESSION['Nickname']; ?></a>
+                            <a class="navbar-brand">Bienvenue <?= $_SESSION['pseudo']; ?></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="post.php">Poster</a>

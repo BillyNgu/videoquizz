@@ -131,23 +131,23 @@ function CreateUser($Name, $Nickname, $Email, $Pwd) {
 }
 
 function CheckLogin($Nickname, $Pwd) {
-    $salt = getSaltFromUser($Nickname);
-    $sql = "SELECT `userNickname`, `userPassword` FROM `user` WHERE `userNickname` = :Nickname AND `userPassword` = :Password ";
-    $query = pokedb()->prepare($sql);
-    $Pwd = sha1("$Pwd" . "$salt");
+    $sql = "SELECT `pseudo`, `mdp` FROM `utilisateurs` WHERE `pseudo` = :nickname AND `mdp` = :pwd";
+    $query = pdo()->prepare($sql);
 
-    $query->bindParam(':Nickname', $Nickname, PDO::PARAM_STR);
-    $query->bindParam(':Password', $Pwd, PDO::PARAM_STR);
+    $Pwd = sha1($Pwd);
+    
+    $query->bindParam(':nickname', $Nickname, PDO::PARAM_STR);
+    $query->bindParam(':pwd', $Pwd, PDO::PARAM_STR);
     $query->execute();
     $user = $query->fetch(PDO::FETCH_ASSOC);
 
-    if ($Nickname === $user['userNickname'] && $Pwd === $user['userPassword']) {
-        $_SESSION['userNickname'] = $Nickname;
+    if ($Nickname === $user['pseudo'] && $Pwd === $user['mdp']) {
+        $_SESSION['pseudo'] = $Nickname;
 //        $_SESSION['idUser'] = $idUser;
 
-        header('Location:index.php');
+        header('Location:login.php');
     } else {
-        $_SESSION['userNickname'] = "";
+        $_SESSION['pseudo'] = "";
     }
 }
 
