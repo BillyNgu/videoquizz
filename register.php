@@ -10,21 +10,16 @@ require_once './dao/dao.php';
 $register = TRUE;
 
 if (isset($_POST['register'])) {
-    $FirstName = trim(filter_input(INPUT_POST, 'FirstName', FILTER_SANITIZE_STRING));
-    $LastName = trim(filter_input(INPUT_POST, 'LastName', FILTER_SANITIZE_STRING));
+    $Name = trim(filter_input(INPUT_POST, 'Name', FILTER_SANITIZE_STRING));
     $Nickname = trim(filter_input(INPUT_POST, 'Nickname', FILTER_SANITIZE_STRING));
     $Email = trim(filter_input(INPUT_POST, 'Email', FILTER_VALIDATE_EMAIL));
-// pas de filtre, parce que hashage prochainement
+    // pas de filtre, parce que hashage prochainement
     $Pwd = filter_input(INPUT_POST, 'Password');
     $PwdRepeat = filter_input(INPUT_POST, 'PasswordConfirmation');
-    $Date = date("Y-m-d H:i:s");
 
     $errors = [];
 
-    if (empty($FirstName)) {
-        $errors['FirstName'] = 'Le prénom ne peut pas être vide.';
-    }
-    if (empty($LastName)) {
+    if (empty($Name)) {
         $errors['LastName'] = 'Le nom ne peut pas être vide.';
     }
     if (empty($Nickname)) {
@@ -44,7 +39,7 @@ if (isset($_POST['register'])) {
         $errors['PasswordConfirmation'] = 'Les mots de passe ne sont pas identiques.';
     }
     if (empty($errors)) {
-        CreateUser($FirstName, $LastName, strtolower($Nickname), $Email, $Pwd, $Date);
+        CreateUser(strtolower($Name), strtolower($Nickname), $Email, $Pwd, "");
         SetFlashMessage("Utilisateur ajouté.");
         header("location:index.php");
         exit;
@@ -64,28 +59,15 @@ if (isset($_POST['register'])) {
             <form action="register.php" method="post">
                 <h3>Inscription</h3>
                 <div class="form-group">
-                    <label for="firstname_login">Prénom :</label>
-                    <input type="text" name="FirstName" class="form-control col-3" id="firstname_login" value="<?php
-                    if (!empty($FirstName)) {
-                        echo $FirstName;
-                    }
-                    ?>">
-                           <?php
-                           if (!empty($errors['FirstName'])) {
-                               echo $errors['FirstName'];
-                           }
-                           ?>
-                </div>
-                <div class="form-group">
                     <label for="lastname_login">Nom :</label>
-                    <input type="text" name="LastName" class="form-control col-3" id="lastname_login" value="<?php
-                    if (!empty($LastName)) {
-                        echo $LastName;
+                    <input type="text" name="Name" class="form-control col-3" id="lastname_login" value="<?php
+                    if (!empty($Name)) {
+                        echo $Name;
                     }
                     ?>">
                            <?php
-                           if (!empty($errors['LastName'])) {
-                               echo $errors['LastName'];
+                           if (!empty($errors['Name'])) {
+                               echo $errors['Name'];
                            }
                            ?>
                 </div>

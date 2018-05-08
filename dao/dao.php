@@ -113,14 +113,20 @@ function getDescription($idPokemon) {
     return $query->fetch(PDO::FETCH_ASSOC);
 }
 
-function CreateUser($Nickname, $Email, $Pwd, $Date) {
-    $sql = "INSERT INTO `user`(`userNickname`, `userEmail`, `userPassword`, `userSalt`)" .
-            "SELECT :Nickname, :Email, :Password, SHA1(NOW())";
-    $query = pokedb()->prepare($sql);
+function CreateUser($Name, $Nickname, $Email, $Pwd) {
+    $sql = "INSERT INTO `utilisateurs`(`nom`, `pseudo`, `email`, `mdp`, `status`) "
+            . "VALUES (:name, :nickname, :email, :pwd, 0)";
+    
+    $query = pdo()->prepare($sql);
+    $query->bindParam('name', $Name, PDO::PARAM_STR);
+    $query->bindParam('nickname', $Nickname, PDO::PARAM_STR);
+    $query->bindParam('email', $Email, PDO::PARAM_STR);
+    $query->bindParam('pwd', $Pwd, PDO::PARAM_STR);
     $query->execute(array(
-        'Nickname' => strtolower($Nickname),
-        'Email' => strtolower($Email),
-        'Password' => sha1("$Pwd" . sha1("$Date"))
+        'name' => strtolower($Name),
+        'nickname' => strtolower($Nickname),
+        'email' => strtolower($Email),
+        'pwd' => sha1($Pwd)
     ));
 }
 
